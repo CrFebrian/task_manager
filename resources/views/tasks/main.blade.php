@@ -71,11 +71,13 @@
     <header class="full-width-header d-flex justify-content-between align-items-center">
         <div class="header-title">Task Manager</div>
         <div>
-            <button type="button" class="btn btn-primary btn-rounded" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+            <!-- Tombol mengarah ke halaman /create -->
+            <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-rounded">
                 Tambah Task
-            </button>
+            </a>
         </div>
     </header>
+
 
     <div class="container">
         @yield('content')

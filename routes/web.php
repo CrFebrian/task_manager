@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\Api\TaskController as ApiTaskController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,8 +16,20 @@ use App\Http\Controllers\TaskController;
 |
 */
 
-Route::resource('tasks', TaskController::class);
+Route::view('/', 'welcome');
 
-Route::get('/', function () {
-    return redirect('/tasks'); // Pengalihan ke rute /tasks
-});
+Route::group(['middleware' => ['role:admin']], function () {
+    // Rute yang hanya dapat diakses oleh pengguna dengan peran 'admin'
+      //Route::get('/admin', [AdminController::class, 'index']);
+    Route:: resource('tasks', TaskController::class);
+ });
+
+Route::view('dashboard', 'dashboard')
+    ->middleware (['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+require __DIR__.'/auth.php';

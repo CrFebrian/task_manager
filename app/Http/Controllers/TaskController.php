@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Http\Requests\StoreTaskRequest;
+use Spatie\Permission\Middleware;
 
 class TaskController extends Controller
 {
@@ -11,21 +14,22 @@ class TaskController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        $tasks = Task::take(10)->get();
-        return view('tasks.index', [
-            'tasks' => $tasks
-        ]);
+    {
+
+    $tasks = Task::with('user')->paginate(10);
+    return view('tasks.index', compact('tasks')); 
+
     }
 
     // Menampilkan form pembuatan tugas
     public function create()
     {
-        return view('tasks.create'); // Tampilkan form untuk membuat tugas baru
+        $Cate = Category::all();
+        return view('tasks.create', compact('Cate')); // Tampilkan form untuk membuat tugas baru
     }
 
     // Menyimpan tugas baru
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
         // Validasi input
         $validated = $request->validate([
@@ -33,6 +37,7 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'due_date' => 'nullable',
+            'category_id' => 'required',
             'status' => 'nullable',
         ]);
 

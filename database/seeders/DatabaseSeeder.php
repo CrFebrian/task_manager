@@ -4,19 +4,29 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(class: [
+            TaskSeeder::class,
+            CategorySeeder::class
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+    $adminRole = Role::findByName('admin');
+    $adminRole->givePermissionTo('melihat posts');
+    $adminRole->givePermissionTo('create posts');
+
+    $userRole = Role::findByName('user');
+    $userRole->givePermissionTo('melihat posts');
+    $user = User::find(3);
+    $user->assignRole('admin');
     }
 }

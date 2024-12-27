@@ -11,16 +11,16 @@ class CreateTasksTable extends Migration
      *
      * @return void
      */
-    public function up()
+        public function up()
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();  // Primary key, auto-increment
-            $table->integer('user_id');  // Foreign key untuk pengguna
-            $table->string('title');  // Judul tugas
-            $table->text('description');  // Deskripsi tugas
-            $table->string('status')->default('Pending');  // Status tugas (misal: pending, completed)
-            $table->date('due_date')->nullable();  // Tanggal jatuh tempo
-            $table->timestamps();  // Timestamps untuk created_at dan updated_at
+            $table->id();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->enum('status', ['pending', 'in_progress', 'completed']);
+            $table->date('due_date');
+            $table->foreignId('user_id')->constrained();
+            $table->timestamps();
         });
     }
 

@@ -13,9 +13,9 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                        <label>ID</label>
+                        <label>User ID</label>
                             <p>
-                                {{ $tasks->user_id }}
+                                {{ $tasks->user_id}}. {{ $tasks->user->name}}
                             </p>
                             <label>Name</label>
                             <p>
@@ -28,6 +28,9 @@
                                 {!! $tasks->description !!}
                             </p>
                         </div>
+                        <p>
+                            {{ $tasks->category->name }}
+                        </p>
                         <div class="mb-3">
                             <label>Status</label>
                             <br/>
